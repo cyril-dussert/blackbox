@@ -34,17 +34,13 @@ function register_new_file() {
   SECRETSEXPOSED=$(is_in_vcs "${unencrypted_file}")
   echo "========== CREATED: ${encrypted_file}"
   echo "========== UPDATING REPO:"
-  shred_file "$unencrypted_file"
+  # For key-value files, set them as key=******** files
+  obfuscate_file "$unencrypted_file"
+  vcs_add "$unencrypted_file"
 
-  if [[ "$SECRETSEXPOSED" == "true" ]] ; then
-    vcs_remove "$unencrypted_file"
-    vcs_add "$encrypted_file"
-  fi
-
-  vcs_ignore "$unencrypted_file"
   echo 'NOTE: "already tracked!" messages are safe to ignore.'
   vcs_add "$BB_FILES" "$encrypted_file"
-  vcs_commit "registered in blackbox: ${unencrypted_file}" "$BB_FILES" "$encrypted_file" "$(vcs_ignore_file_path)"
+  vcs_commit "registered in blackbox: ${unencrypted_file}" "$BB_FILES" "$encrypted_file" "$unencrypted_file"
 }
 
 for target in "$@"; do

@@ -21,14 +21,17 @@ for param in "$@" ; do
 
   fail_if_not_on_cryptlist "$unencrypted_file"
   fail_if_not_exists "$encrypted_file" "This should not happen."
-  if [[ ! -s "$unencrypted_file" ]]; then
-    rm -f "$unencrypted_file"
-  fi
-  if [[ -f "$unencrypted_file" ]]; then
-    echo >&2 SKIPPING: "$1" "Will not overwrite non-empty files."
-    continue
-  fi
+  # if [[ ! -s "$unencrypted_file" ]]; then
+  #   rm -f "$unencrypted_file"
+  # fi
+  # if [[ -f "$unencrypted_file" ]]; then
+  #   echo >&2 SKIPPING: "$1" "Will not overwrite non-empty files."
+  #   continue
+  # fi
 
+  # We delete existing obfuscated file so that decryption can recreate untouched file
+  rm -f "$unencrypted_file"
+  
   prepare_keychain
   # FIXME(tlim): prepare_keychain only needs to run once, outside of the loop.
   decrypt_file "$encrypted_file" "$unencrypted_file"

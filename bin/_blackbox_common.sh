@@ -295,6 +295,20 @@ function decrypt_file_overwrite() {
   fi
 }
 
+function obfuscate_file() {
+  local name
+  name="$1"
+
+  # Replace all yaml values by ***
+  echo "Obfuscating $name..."
+  # Replace all values of the pattern "key: value" by "key: ***"
+  sed -i -E "s/(^[a-zA-Z0-9 -]*): .*$/\1: \*\*\*/" $name
+  # Replace all pattern "- <value>" by "- ***"
+  sed -i -E "s/(^ *-) .*/\1 \*\*\*/" $name
+
+
+}
+
 # Shred a file.  If shred binary does not exist, delete it.
 function shred_file() {
   local name

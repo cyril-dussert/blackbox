@@ -42,7 +42,7 @@ while IFS= read <&99 -r unencrypted_file; do
   fail_if_not_on_cryptlist "$unencrypted_file"
   decrypt_file_overwrite "$encrypted_file" "$unencrypted_file"
   encrypt_file "$unencrypted_file" "$encrypted_file"
-  shred_file "$unencrypted_file"
+  obfuscate_file "$unencrypted_file"
 done 99<"$BB_FILES"
 
 fail_if_keychain_has_secrets

@@ -27,9 +27,9 @@ for param in "$@" ; do
   fail_if_keychain_has_secrets
 
   encrypt_file "$unencrypted_file" "$encrypted_file"
-  shred_file "$unencrypted_file"
+  obfuscate_file "$unencrypted_file"
   echo >&2 ========== UPDATED '"'$encrypted_file'"'
-  next_steps+=( "    $VCS_TYPE commit -m\"${encrypted_file} updated\" \"$encrypted_file\"" )
+  next_steps+=( "    $VCS_TYPE commit -m\"${encrypted_file} updated\" \"$encrypted_file\" \"$unencrypted_file\"" )
 
 done
 
